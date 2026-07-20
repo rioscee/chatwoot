@@ -248,6 +248,10 @@ Rails.application.routes.draw do
               get :download
             end
           end
+          resources :pipelines, only: [:index, :create, :update, :destroy] do
+            resources :pipeline_stages, only: [:index, :create, :update, :destroy]
+          end
+          resources :deals, only: [:index, :create, :update, :destroy]
           resources :reporting_events, only: [:index] if ChatwootApp.enterprise?
 
           if ChatwootApp.enterprise?

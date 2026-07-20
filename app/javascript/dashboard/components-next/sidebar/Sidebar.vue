@@ -631,6 +631,13 @@ const menuItems = computed(() => {
       ],
     },
     {
+      name: 'Deals',
+      label: t('SIDEBAR.DEALS'),
+      icon: 'i-lucide-kanban-square',
+      to: accountScopedRoute('deals_dashboard_index'),
+      activeOn: ['deals_dashboard_index'],
+    },
+    {
       name: 'Companies',
       label: t('SIDEBAR.COMPANIES'),
       icon: 'i-lucide-building-2',

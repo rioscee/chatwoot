@@ -416,9 +416,9 @@ es:
     copilot_message_required: El mensaje es obligatorio
     copilot_error: 'Conecte un asistente a esta bandeja de entrada para utilizar Copilot'
     copilot_limit: 'Te quedaste sin créditos de Copilot. Puedes comprar más créditos desde la sección de facturación.'
-    upgrade: 'Actualiza tu plan para habilitar Captain AI'
-    disabled: 'Captain AI está deshabilitado para esta cuenta.'
-    api_key_missing: 'La clave API de Captain AI no está configurada.'
+    upgrade: 'Actualiza tu plan para habilitar el Agente IA'
+    disabled: 'El Agente IA está deshabilitado para esta cuenta.'
+    api_key_missing: 'La clave API del Agente IA no está configurada.'
     copilot:
       using_tool: 'Usando la herramienta %{function_name}'
       completed_tool_call: 'Se completó la llamada a la herramienta %{function_name}'
@@ -577,7 +577,7 @@ es:
     inbox_already_assigned: 'Inbox has already been assigned to this policy'
   portals:
     articles:
-      captain_not_available: 'La traducción requiere que el Capitán esté habilitado para esta cuenta'
+      captain_not_available: 'La traducción requiere que el Agente IA esté habilitado para esta cuenta'
       locale_not_available: 'Locale no disponible en este portal'
       category_not_found: 'Categoría no encontrada en este portal'
       no_articles_found: 'No hay artículos para procesar'
