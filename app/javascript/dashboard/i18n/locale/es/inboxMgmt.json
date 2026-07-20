@@ -106,7 +106,7 @@
           "PLACEHOLDER": "¡Hola!"
         },
         "CHANNEL_WELCOME_TAGLINE": {
-          "LABEL": "Bienvenido Tagline",
+          "LABEL": "Subtítulo de bienvenida",
           "PLACEHOLDER": "Facilitamos la conexión con nosotros. Pídanos cualquier cosa o comparte tus comentarios."
         },
         "CHANNEL_GREETING_MESSAGE": {
@@ -682,52 +682,52 @@
         "PLACEHOLDER": "Nos gustaría llamarte en relación con tu conversación."
       }
     },
-    "CHANNEL_PREFERENCES": "Channel Preferences",
-    "WIDGET_FEATURES": "Widget features",
+    "CHANNEL_PREFERENCES": "Preferencias del canal",
+    "WIDGET_FEATURES": "Características del widget",
     "ACCOUNT_HEALTH": {
-      "TITLE": "Manage your WhatsApp account",
-      "DESCRIPTION": "Review your WhatsApp account status, messaging limits, and quality. Update settings or resolve issues if needed",
-      "GO_TO_SETTINGS": "Go to Meta Business Manager",
-      "NO_DATA": "Health data is not available",
+      "TITLE": "Gestiona tu cuenta de WhatsApp",
+      "DESCRIPTION": "Revisa el estado de tu cuenta de WhatsApp, límites de mensajería y calidad. Actualiza la configuración o resuelve problemas si es necesario.",
+      "GO_TO_SETTINGS": "Ir a Meta Business Manager",
+      "NO_DATA": "Los datos de estado no están disponibles",
       "FIELDS": {
         "DISPLAY_PHONE_NUMBER": {
-          "LABEL": "Display phone number",
-          "TOOLTIP": "Phone number displayed to customers"
+          "LABEL": "Número de teléfono visible",
+          "TOOLTIP": "Número de teléfono mostrado a los clientes"
         },
         "VERIFIED_NAME": {
-          "LABEL": "Business name",
-          "TOOLTIP": "Business name verified by WhatsApp"
+          "LABEL": "Nombre del negocio",
+          "TOOLTIP": "Nombre del negocio verificado por WhatsApp"
         },
         "DISPLAY_NAME_STATUS": {
-          "LABEL": "Display name status",
-          "TOOLTIP": "Status of your business name verification"
+          "LABEL": "Estado del nombre visible",
+          "TOOLTIP": "Estado de verificación del nombre de tu negocio"
         },
         "QUALITY_RATING": {
-          "LABEL": "Quality rating",
-          "TOOLTIP": "WhatsApp quality rating for your account"
+          "LABEL": "Calidad de la cuenta",
+          "TOOLTIP": "Calificación de calidad de WhatsApp para tu cuenta"
         },
         "MESSAGING_LIMIT_TIER": {
-          "LABEL": "Messaging limit tier",
-          "TOOLTIP": "Daily messaging limit for your account"
+          "LABEL": "Nivel de límite de mensajes",
+          "TOOLTIP": "Límite diario de mensajería para tu cuenta"
         },
         "ACCOUNT_MODE": {
-          "LABEL": "Account mode",
-          "TOOLTIP": "Current operating mode of your WhatsApp account"
+          "LABEL": "Modo de cuenta",
+          "TOOLTIP": "Modo de operación actual de tu cuenta de WhatsApp"
         }
       },
       "VALUES": {
         "TIERS": {
-          "TIER_250": "250 customers per 24h",
-          "TIER_1000": "1K customers per 24h",
-          "TIER_1K": "1K customers per 24h",
-          "TIER_10K": "10K customers per 24h",
-          "TIER_100K": "100K customers per 24h",
-          "TIER_UNLIMITED": "Unlimited customers per 24h",
-          "UNKNOWN": "Rating not available"
+          "TIER_250": "250 clientes por 24h",
+          "TIER_1000": "1K clientes por 24h",
+          "TIER_1K": "1K clientes por 24h",
+          "TIER_10K": "10K clientes por 24h",
+          "TIER_100K": "100K clientes por 24h",
+          "TIER_UNLIMITED": "Clientes ilimitados por 24h",
+          "UNKNOWN": "Calificación no disponible"
         },
         "STATUSES": {
-          "APPROVED": "Approved",
-          "PENDING_REVIEW": "Pending Review",
+          "APPROVED": "Aprobado",
+          "PENDING_REVIEW": "Revisión pendiente",
           "AVAILABLE_WITHOUT_REVIEW": "Available Without Review",
           "REJECTED": "Rejected",
           "DECLINED": "Declined",
@@ -1187,7 +1187,7 @@
           "PLACE_HOLDER": "¡Hola!"
         },
         "WELCOME_TAGLINE": {
-          "LABEL": "Bienvenido Tagline",
+          "LABEL": "Subtítulo de bienvenida",
           "PLACE_HOLDER": "Facilitamos la conexión con nosotros. Pídanos cualquier cosa o comparte tus comentarios."
         },
         "REPLY_TIME": {
@@ -1197,19 +1197,19 @@
           "IN_A_DAY": "En un día"
         },
         "WIDGET_COLOR_LABEL": "Color del widget",
-        "WIDGET_BUBBLE": "Bubble",
-        "WIDGET_BUBBLE_POSITION_LABEL": "Position:",
+        "WIDGET_BUBBLE": "Burbuja flotante",
+        "WIDGET_BUBBLE_POSITION_LABEL": "Posición:",
         "WIDGET_BUBBLE_TYPE_LABEL": "Tipo:",
         "WIDGET_BUBBLE_LAUNCHER_TITLE": {
           "DEFAULT": "Chatea con nosotros",
-          "LABEL": "Launcher Title",
+          "LABEL": "Título de la burbuja",
           "PLACE_HOLDER": "Chatea con nosotros"
         },
         "UPDATE": {
-          "BUTTON_TEXT": "Actualizar ajustes de Widget",
+          "BUTTON_TEXT": "Actualizar ajustes del widget",
           "API": {
-            "SUCCESS_MESSAGE": "Configuración de Widget actualizada correctamente",
-            "ERROR_MESSAGE": "No se puede actualizar la configuración del widget"
+            "SUCCESS_MESSAGE": "Configuración del widget actualizada correctamente",
+            "ERROR_MESSAGE": "No se pudo actualizar la configuración del widget"
           }
         },
         "WIDGET_VIEW_OPTION": {
@@ -1227,7 +1227,7 @@
       },
       "WIDGET_SCREEN": {
         "DEFAULT": "Predeterminado",
-        "CHAT": "Chat mode"
+        "CHAT": "Modo chat"
       },
       "REPLY_TIME": {
         "IN_A_FEW_MINUTES": "Normalmente responde en unos minutos",
