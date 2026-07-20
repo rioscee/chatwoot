@@ -1,5 +1,5 @@
 namespace :demo do
-  desc 'Poblar el CRM con datos de prueba masivos para demostraciones (WhatsApp, Instagram, Facebook Messenger, Telegram y Web Chat)'
+  desc 'Poblar el CRM con datos de prueba masivos para demostraciones (WhatsApp, Instagram, Facebook Messenger, Telegram, Web Chat y Campañas)'
   task poblar: :environment do
     puts '🚀 Iniciando la carga masiva de datos multicanal de prueba para la Demo...'
 
@@ -49,7 +49,7 @@ namespace :demo do
 
     stages = pipeline.pipeline_stages.order(:position).to_a
 
-    # 3. Crear Canales Multicanal (WhatsApp, Instagram, Facebook, Telegram, WebWidget)
+    # 3. Crear Canales Multicanal (WhatsApp, Instagram, Facebook, Telegram, Web Support)
     # WhatsApp
     channel_wa = Channel::Whatsapp.find_by(account_id: account.id)
     unless channel_wa
@@ -101,8 +101,9 @@ namespace :demo do
     end
     inbox_tg = account.inboxes.find_or_create_by!(name: 'Telegram Soporte', channel: channel_tg)
 
-    # Web Chat (Acme Support)
+    # Web Chat (Web Support)
     inbox_web = account.inboxes.find_by(channel_type: 'Channel::WebWidget') || account.inboxes.first
+    inbox_web.update!(name: 'Web Support') if inbox_web && inbox_web.name != 'Web Support'
 
     # Asignar a todos los usuarios a todas las bandejas creadas
     account.inboxes.each do |inb|
@@ -142,14 +143,11 @@ namespace :demo do
       { name: 'Jorge Silva', email: 'jorge.silva@ejemplo.com', phone: '+51978901234', inbox: inbox_web, assignee: sample_agents[1], msg: 'Buenas tardes, ¿tienen documentación en español para desarrolladores?', stage: stages[3], deal_name: 'Integración API Personalizada', value: 2900 }
     ]
 
-    created_contacts = []
-
     sample_conversations_data.each_with_index do |data, idx|
       contact = account.contacts.find_or_create_by!(email: data[:email]) do |c|
         c.name = data[:name]
         c.phone_number = data[:phone]
       end
-      created_contacts << contact
 
       target_inbox = data[:inbox]
       source_id = case target_inbox.channel_type
@@ -190,8 +188,29 @@ namespace :demo do
       end
     end
 
-    puts "✅ #{sample_conversations_data.count} conversaciones multicanal cargadas (WhatsApp, Instagram, Facebook, Telegram y Web Widget)."
-    puts "🎉 ¡El CRM ahora está repleto de conversaciones en 'Mías', 'Sin asignar' y 'Todos' para una demostración masiva!"
+    # 5. Crear Campañas de Ejemplo para Demostración
+    campaign_web = account.campaigns.find_or_create_by!(title: 'Bienvenida Chat Web') do |cmp|
+      cmp.description = 'Mensaje emergente automático de salutación a los visitantes de la web tras 5 segundos.'
+      cmp.message = '¡Hola! 👋 Bienvenido a nuestro sitio web. ¿En qué podemos ayudarte hoy?'
+      cmp.inbox_id = inbox_web.id
+      cmp.campaign_type = 'ongoing'
+      cmp.campaign_status = 'active'
+      cmp.trigger_rules = { 'time_on_page' => 5, 'url' => 'https://ejemplo.com' }
+      cmp.sender_id = main_user.id
+    end
+
+    campaign_wa = account.campaigns.find_or_create_by!(title: 'Lanzamiento Promo Cierre de Mes') do |cmp|
+      cmp.description = 'Campaña masiva enviada a lista de prospectos interesados por WhatsApp.'
+      cmp.message = '¡Hola! Tenemos un descuento especial del 20% en licencias CRM solo por hoy. ¿Deseas más información?'
+      cmp.inbox_id = inbox_wa.id
+      cmp.campaign_type = 'one_off'
+      cmp.campaign_status = 'active'
+      cmp.scheduled_at = Time.now.utc
+      cmp.sender_id = main_user.id
+    end
+
+    puts "✅ Campañas de prueba creadas ('#{campaign_web.title}' y '#{campaign_wa.title}')."
+    puts "🎉 ¡El CRM ahora está completamente poblado con bandejas renombradas a 'Web Support' y campañas activas!"
   end
 
   desc 'Limpiar todos los datos de prueba dejando la instalación 100% como nueva para un cliente'
@@ -204,27 +223,31 @@ namespace :demo do
       next
     end
 
-    # 1. Borrar todos los tratos (Deals)
+    # 1. Borrar Campañas de prueba
+    account.campaigns.destroy_all
+    puts "🗑️ Se eliminaron las campañas de prueba."
+
+    # 2. Borrar todos los tratos (Deals)
     deals_count = Deal.where(account_id: account.id).count
     Deal.where(account_id: account.id).destroy_all
     puts "🗑️ Se eliminaron #{deals_count} tratos del Kanban."
 
-    # 2. Borrar mensajes y conversaciones
+    # 3. Borrar mensajes y conversaciones
     conv_count = account.conversations.count
     account.conversations.destroy_all
     puts "🗑️ Se eliminaron #{conv_count} conversaciones de prueba."
 
-    # 3. Borrar contactos de prueba
+    # 4. Borrar contactos de prueba
     contacts_count = account.contacts.count
     account.contacts.destroy_all
     puts "🗑️ Se eliminaron #{contacts_count} contactos."
 
-    # 4. Borrar bandejas multicanal de prueba
+    # 5. Borrar bandejas multicanal de prueba
     inboxes_count = account.inboxes.where.not(channel_type: 'Channel::WebWidget').count
     account.inboxes.where.not(channel_type: 'Channel::WebWidget').destroy_all
     puts "🗑️ Se eliminaron #{inboxes_count} bandejas multicanal de prueba."
 
-    # 5. Borrar agentes de prueba
+    # 6. Borrar agentes de prueba
     sample_emails = ['laura.ramirez@ejemplo.com', 'pedro.castro@ejemplo.com']
     User.where(email: sample_emails).destroy_all
     puts '🗑️ Se eliminaron los agentes de prueba.'
