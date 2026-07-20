@@ -1,7 +1,7 @@
 namespace :demo do
-  desc 'Poblar el CRM con datos de prueba realistas para demostraciones (Agentes, Contactos, Conversaciones Multicanal y Tratos Kanban)'
+  desc 'Poblar el CRM con datos de prueba masivos para demostraciones (WhatsApp, Instagram, Facebook Messenger, Telegram y Web Chat)'
   task poblar: :environment do
-    puts '🚀 Iniciando la carga de datos de prueba multicanal para la Demo...'
+    puts '🚀 Iniciando la carga masiva de datos multicanal de prueba para la Demo...'
 
     account = Account.first
     unless account
@@ -48,33 +48,8 @@ namespace :demo do
     end
 
     stages = pipeline.pipeline_stages.order(:position).to_a
-    if stages.empty?
-      puts '❌ El embudo no tiene etapas creadas.'
-      next
-    end
 
-    # 3. Crear Contactos de Prueba (Incluyendo 4 nuevos leads de Messenger)
-    sample_contacts_data = [
-      { name: 'María García', email: 'maria.garcia@ejemplo.com', phone_number: '+51987654321' },
-      { name: 'Carlos Mendoza', email: 'carlos.mendoza@ejemplo.com', phone_number: '+51912345678' },
-      { name: 'Ana Lucía Rodríguez', email: 'ana.rodriguez@ejemplo.com', phone_number: '+51923456789' },
-      { name: 'Diego Morales', email: 'diego.morales@ejemplo.com', phone_number: '+51934567890' },
-      { name: 'Valentina Torres', email: 'valentina.torres@ejemplo.com', phone_number: '+51945678901' },
-      { name: 'Roberto Sánchez', email: 'roberto.sanchez@ejemplo.com', phone_number: '+51991234567' },
-      { name: 'Elena Morales', email: 'elena.morales@ejemplo.com', phone_number: '+51992345678' },
-      { name: 'Javier Ramos', email: 'javier.ramos@ejemplo.com', phone_number: '+51993456789' },
-      { name: 'Lucía Méndez', email: 'lucia.mendez@ejemplo.com', phone_number: '+51994567890' }
-    ]
-
-    contacts = sample_contacts_data.map do |data|
-      account.contacts.find_or_create_by!(email: data[:email]) do |c|
-        c.name = data[:name]
-        c.phone_number = data[:phone_number]
-      end
-    end
-    puts "✅ #{contacts.count} contactos de prueba listos."
-
-    # 4. Crear Canales y Bandejas de Entrada de Prueba (WhatsApp, Instagram, Facebook Messenger)
+    # 3. Crear Canales Multicanal (WhatsApp, Instagram, Facebook, Telegram, WebWidget)
     # WhatsApp
     channel_wa = Channel::Whatsapp.find_by(account_id: account.id)
     unless channel_wa
@@ -114,6 +89,21 @@ namespace :demo do
     end
     inbox_fb = account.inboxes.find_or_create_by!(name: 'Facebook Messenger', channel: channel_fb)
 
+    # Telegram
+    channel_tg = Channel::Telegram.find_by(account_id: account.id)
+    unless channel_tg
+      channel_tg = Channel::Telegram.new(
+        account_id: account.id,
+        bot_name: 'DemoBot',
+        bot_token: '123456789:ABCdefGHIjklMNOpqrsTUVwxyZ'
+      )
+      channel_tg.save!(validate: false)
+    end
+    inbox_tg = account.inboxes.find_or_create_by!(name: 'Telegram Soporte', channel: channel_tg)
+
+    # Web Chat (Acme Support)
+    inbox_web = account.inboxes.find_by(channel_type: 'Channel::WebWidget') || account.inboxes.first
+
     # Asignar a todos los usuarios a todas las bandejas creadas
     account.inboxes.each do |inb|
       all_agents.each do |ag|
@@ -121,23 +111,47 @@ namespace :demo do
       end
     end
 
-    sample_messages = [
-      { contact: contacts[0], msg: '¡Hola! Quisiera información sobre los planes de suscripción para mi negocio por WhatsApp.', inbox: inbox_wa },
-      { contact: contacts[1], msg: 'Buenas tardes, ¿tienen disponibilidad para agendar una demostración por Instagram?', inbox: inbox_ig },
-      { contact: contacts[2], msg: 'Hola, me gustaría saber si el CRM se puede conectar con mi fanpage de Facebook Messenger.', inbox: inbox_fb },
-      { contact: contacts[3], msg: '¿Cuáles son los métodos de pago disponibles? Me escribes al WhatsApp porfa.', inbox: inbox_wa },
-      { contact: contacts[4], msg: 'Hola, vi su historia de Instagram y me interesa instalar el sistema en mi tienda.', inbox: inbox_ig },
-      { contact: contacts[5], msg: '¡Buenas! Me comunico por Facebook Messenger. ¿Tienen delivery gratis para Lima Metropolitana?', inbox: inbox_fb },
-      { contact: contacts[6], msg: 'Hola, quisiera cotizar la plataforma CRM para 3 sucursales de mi restaurante.', inbox: inbox_fb },
-      { contact: contacts[7], msg: 'Buenas noches, ¿aceptan tarjetas de crédito y facturación electrónica?', inbox: inbox_fb },
-      { contact: contacts[8], msg: 'Hola equipo, vi su anuncio en Facebook de la oferta del CRM y me interesa comprarlo.', inbox: inbox_fb }
+    # 4. Lista Masiva de 18 Contactos y Conversaciones Multicanal
+    sample_conversations_data = [
+      # WhatsApp (4)
+      { name: 'María García', email: 'maria.garcia@ejemplo.com', phone: '+51987654321', inbox: inbox_wa, assignee: main_user, msg: '¡Hola! Quisiera información sobre los planes de suscripción para mi negocio por WhatsApp.', stage: stages[0], deal_name: 'Plan Anual Pizzería Bella', value: 1200 },
+      { name: 'Diego Morales', email: 'diego.morales@ejemplo.com', phone: '+51934567890', inbox: inbox_wa, assignee: main_user, msg: '¿Cuáles son los métodos de pago disponibles? Me escribes al WhatsApp porfa.', stage: stages[1], deal_name: 'Consultoría Multicanal Restaurante', value: 980 },
+      { name: 'Gonzalo Herrera', email: 'gonzalo.herrera@ejemplo.com', phone: '+51995678901', inbox: inbox_wa, assignee: sample_agents[0], msg: 'Hola equipo, requiero integrar 3 líneas de WhatsApp para mi call center.', stage: stages[2], deal_name: 'Integración 3 Líneas WA', value: 2400 },
+      { name: 'Patricia Alarcón', email: 'patricia.alarcon@ejemplo.com', phone: '+51996789012', inbox: inbox_wa, assignee: nil, msg: 'Buenas tardes, envié el comprobante de pago por WhatsApp para activar mi plan.', stage: stages[4], deal_name: 'Activación Cuenta PRO', value: 1800 },
+
+      # Instagram DM (4)
+      { name: 'Carlos Mendoza', email: 'carlos.mendoza@ejemplo.com', phone: '+51912345678', inbox: inbox_ig, assignee: main_user, msg: 'Buenas tardes, ¿tienen disponibilidad para agendar una demostración por Instagram?', stage: stages[0], deal_name: 'Servicio CRM Barbería Club', value: 450 },
+      { name: 'Valentina Torres', email: 'valentina.torres@ejemplo.com', phone: '+51945678901', inbox: inbox_ig, assignee: sample_agents[0], msg: 'Hola, vi su historia de Instagram y me interesa instalar el sistema en mi tienda.', stage: stages[2], deal_name: 'Demostración Plataforma VIP', value: 1500 },
+      { name: 'Sebastián Paredes', email: 'sebastian.paredes@ejemplo.com', phone: '+51997890123', inbox: inbox_ig, assignee: sample_agents[1], msg: '¡Hola! Me encantó la plantilla de WhatsApp que publicaron en Reels.', stage: stages[1], deal_name: 'Licencia Plantillas Reels', value: 350 },
+      { name: 'Valeria Castro', email: 'valeria.castro@ejemplo.com', phone: '+51998901234', inbox: inbox_ig, assignee: nil, msg: 'Hola, ¿pueden responder el DM? Quiero comprar la licencia para mi marca de ropa.', stage: stages[3], deal_name: 'Licencia Marca de Ropa', value: 1100 },
+
+      # Facebook Messenger (4)
+      { name: 'Ana Lucía Rodríguez', email: 'ana.rodriguez@ejemplo.com', phone: '+51923456789', inbox: inbox_fb, assignee: main_user, msg: 'Hola, me gustaría saber si el CRM se puede conectar con mi fanpage de Facebook Messenger.', stage: stages[1], deal_name: 'Implementación Tienda Calzado', value: 850 },
+      { name: 'Elena Morales', email: 'elena.morales@ejemplo.com', phone: '+51992345678', inbox: inbox_fb, assignee: main_user, msg: 'Hola, quisiera cotizar la plataforma CRM para 3 sucursales de mi restaurante.', stage: stages[3], deal_name: 'Licencia 5 Vendedores', value: 1350 },
+      { name: 'Roberto Sánchez', email: 'roberto.sanchez@ejemplo.com', phone: '+51991234567', inbox: inbox_fb, assignee: nil, msg: '¡Buenas! Me comunico por Facebook Messenger. ¿Tienen delivery gratis para Lima Metropolitana?', stage: stages[2], deal_name: 'Cotización 3 Sucursales', value: 2100 },
+      { name: 'Javier Ramos', email: 'javier.ramos@ejemplo.com', phone: '+51993456789', inbox: inbox_fb, assignee: sample_agents[1], msg: 'Buenas noches, ¿aceptan tarjetas de crédito y facturación electrónica?', stage: stages[3], deal_name: 'Paquete Empresarial Facturación', value: 2800 },
+
+      # Telegram (3)
+      { name: 'Lucía Méndez', email: 'lucia.mendez@ejemplo.com', phone: '+51994567890', inbox: inbox_tg, assignee: sample_agents[0], msg: 'Hola equipo, me uní a su canal de Telegram y quiero contratar el servicio de chatbots.', stage: stages[4], deal_name: 'Cierre de Contrato Anual', value: 3400 },
+      { name: 'Gabriel Núñez', email: 'gabriel.nunez@ejemplo.com', phone: '+51999012345', inbox: inbox_tg, assignee: nil, msg: 'Hola, ¿tienen bot automatizado para responder preguntas frecuentes en Telegram?', stage: stages[0], deal_name: 'Bot Telegram Automático', value: 650 },
+      { name: 'Andrea Benítez', email: 'andrea.benitez@ejemplo.com', phone: '+51990123456', inbox: inbox_tg, assignee: sample_agents[1], msg: 'Buenas noches, ¿cómo puedo vincular Telegram con las respuestas automáticas?', stage: stages[1], deal_name: 'Configuración Automatización TG', value: 500 },
+
+      # Web Chat Widget (3)
+      { name: 'Fernando Gómez', email: 'fernando.gomez@ejemplo.com', phone: '+51956789012', inbox: inbox_web, assignee: nil, msg: 'Hola desde el chat web, necesito ayuda con la instalación de la widget en Shopify.', stage: stages[0], deal_name: 'Instalación Widget Shopify', value: 400 },
+      { name: 'Sofía Vargas', email: 'sofia.vargas@ejemplo.com', phone: '+51967890123', inbox: inbox_web, assignee: sample_agents[0], msg: 'Hola, estoy navegando en su página web y quiero solicitar una llamada comercial.', stage: stages[2], deal_name: 'Asesoría Comercial Web', value: 1600 },
+      { name: 'Jorge Silva', email: 'jorge.silva@ejemplo.com', phone: '+51978901234', inbox: inbox_web, assignee: sample_agents[1], msg: 'Buenas tardes, ¿tienen documentación en español para desarrolladores?', stage: stages[3], deal_name: 'Integración API Personalizada', value: 2900 }
     ]
 
-    sample_messages.each_with_index do |item, idx|
-      contact = item[:contact]
-      target_inbox = item[:inbox]
-      assigned_user = all_agents[idx % all_agents.length]
+    created_contacts = []
 
+    sample_conversations_data.each_with_index do |data, idx|
+      contact = account.contacts.find_or_create_by!(email: data[:email]) do |c|
+        c.name = data[:name]
+        c.phone_number = data[:phone]
+      end
+      created_contacts << contact
+
+      target_inbox = data[:inbox]
       source_id = case target_inbox.channel_type
                   when 'Channel::Whatsapp'
                     contact.phone_number.to_s.gsub(/[^0-9]/, '')
@@ -152,46 +166,32 @@ namespace :demo do
       conversation = account.conversations.find_or_create_by!(contact_id: contact.id, inbox_id: target_inbox.id) do |conv|
         conv.contact_inbox_id = contact_inbox.id
         conv.status = 'open'
-        conv.assignee_id = assigned_user.id
+        conv.assignee_id = data[:assignee]&.id
       end
 
       if conversation.messages.empty?
         conversation.messages.create!(
           account_id: account.id,
           inbox_id: target_inbox.id,
-          content: item[:msg],
+          content: data[:msg],
           message_type: :incoming,
           sender: contact
         )
       end
-    end
-    puts '✅ Conversaciones y mensajes multicanal (incluyendo 4 leads de Messenger) generados con éxito.'
 
-    # 5. Crear Tratos (Deals) en el Embudo Kanban para cada uno de los contactos
-    deals_data = [
-      { name: 'Plan Anual Pizzería Bella', value: 1200, stage: stages[0], contact: contacts[0] },
-      { name: 'Servicio CRM Barbería Club', value: 450, stage: stages[0], contact: contacts[1] },
-      { name: 'Implementación Tienda Calzado', value: 850, stage: stages[1], contact: contacts[2] },
-      { name: 'Consultoría Multicanal Restaurante', value: 980, stage: stages[1], contact: contacts[3] },
-      { name: 'Demostración Plataforma VIP', value: 1500, stage: stages[2], contact: contacts[4] },
-      { name: 'Cotización 3 Sucursales', value: 2100, stage: stages[2], contact: contacts[5] },
-      { name: 'Licencia 5 Vendedores', value: 1350, stage: stages[3], contact: contacts[6] },
-      { name: 'Paquete Empresarial Facturación', value: 2800, stage: stages[3], contact: contacts[7] },
-      { name: 'Cierre de Contrato Anual', value: 3400, stage: stages[4], contact: contacts[8] }
-    ]
-
-    deals_data.each_with_index do |d, idx|
-      Deal.find_or_create_by!(name: d[:name], account_id: account.id) do |deal|
-        deal.value = d[:value]
-        deal.pipeline_stage_id = d[:stage].id
-        deal.contact_id = d[:contact].id
-        deal.position = idx + 1
-        deal.status = 'open'
+      if data[:stage]
+        Deal.find_or_create_by!(name: data[:deal_name], account_id: account.id) do |deal|
+          deal.value = data[:value]
+          deal.pipeline_stage_id = data[:stage].id
+          deal.contact_id = contact.id
+          deal.position = idx + 1
+          deal.status = 'open'
+        end
       end
     end
-    puts "✅ #{deals_data.count} tratos creados y vinculados a las conversaciones."
 
-    puts '🎉 ¡El CRM ahora está completamente poblado con escenarios, agentes y leads de Messenger!'
+    puts "✅ #{sample_conversations_data.count} conversaciones multicanal cargadas (WhatsApp, Instagram, Facebook, Telegram y Web Widget)."
+    puts "🎉 ¡El CRM ahora está repleto de conversaciones en 'Mías', 'Sin asignar' y 'Todos' para una demostración masiva!"
   end
 
   desc 'Limpiar todos los datos de prueba dejando la instalación 100% como nueva para un cliente'
