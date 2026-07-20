@@ -95,6 +95,11 @@ namespace :demo do
     end
     inbox_fb = account.inboxes.find_or_create_by!(name: 'Facebook Messenger', channel: channel_fb)
 
+    # Asegurar que el usuario administrador esté asignado a todas las bandejas creadas
+    account.inboxes.each do |inb|
+      InboxMember.find_or_create_by!(inbox_id: inb.id, user_id: user.id) if user
+    end
+
     sample_messages = [
       { msg: '¡Hola! Quisiera información sobre los planes de suscripción para mi negocio por WhatsApp.', inbox: inbox_wa },
       { msg: 'Buenas tardes, ¿tienen disponibilidad para agendar una demostración por Instagram?', inbox: inbox_ig },
