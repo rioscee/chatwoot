@@ -61,3 +61,14 @@ json.waiting_since conversation.waiting_since.to_i.to_i
 sla_applicable = !conversation.respond_to?(:sla_applicable?) || conversation.sla_applicable?
 json.sla_policy_id sla_applicable ? conversation.sla_policy_id : nil
 json.partial! 'enterprise/api/v1/conversations/partials/conversation', conversation: conversation if ChatwootApp.enterprise?
+
+deal = conversation.contact&.deals&.last
+if deal
+  json.deal do
+    json.id deal.id
+    json.name deal.name
+    json.value deal.value
+    json.stage_name deal.pipeline_stage&.name
+    json.stage_position deal.pipeline_stage&.position
+  end
+end

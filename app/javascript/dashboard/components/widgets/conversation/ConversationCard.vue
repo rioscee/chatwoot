@@ -78,6 +78,48 @@ const messagePreviewClass = computed(() => {
   ];
 });
 
+const dealStageInfo = computed(() => {
+  const deal = props.chat?.deal;
+  if (!deal) return null;
+
+  const pos = deal.stage_position || 1;
+  const name = deal.stage_name || 'Prospecto';
+
+  switch (pos) {
+    case 1:
+      return {
+        name,
+        badgeClass: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30',
+        dotClass: 'bg-amber-500',
+      };
+    case 2:
+      return {
+        name,
+        badgeClass: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30',
+        dotClass: 'bg-blue-500',
+      };
+    case 3:
+      return {
+        name,
+        badgeClass: 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30',
+        dotClass: 'bg-purple-500',
+      };
+    case 4:
+      return {
+        name,
+        badgeClass: 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30',
+        dotClass: 'bg-orange-500',
+      };
+    case 5:
+    default:
+      return {
+        name,
+        badgeClass: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30',
+        dotClass: 'bg-emerald-500',
+      };
+  }
+});
+
 const onThumbnailHover = () => {
   hovered.value = !props.hideThumbnail;
 };
@@ -181,10 +223,19 @@ watch(
         </div>
       </div>
       <h4
-        class="conversation--user text-sm my-0 mx-2 capitalize pt-0.5 text-ellipsis overflow-hidden whitespace-nowrap flex-1 min-w-0 ltr:pr-16 rtl:pl-16 text-n-slate-12"
+        class="conversation--user text-sm my-0 mx-2 capitalize pt-0.5 text-ellipsis overflow-hidden whitespace-nowrap flex-1 min-w-0 ltr:pr-16 rtl:pl-16 text-n-slate-12 flex items-center justify-between gap-1.5"
         :class="hasUnread ? 'font-semibold' : 'font-medium'"
       >
-        {{ currentContact.name }}
+        <span class="truncate">{{ currentContact.name }}</span>
+        <span
+          v-if="dealStageInfo"
+          class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold border flex-shrink-0"
+          :class="dealStageInfo.badgeClass"
+          :title="`Etapa del embudo: ${dealStageInfo.name}`"
+        >
+          <span class="size-1.5 rounded-full" :class="dealStageInfo.dotClass" />
+          <span>{{ dealStageInfo.name }}</span>
+        </span>
       </h4>
       <VoiceCallStatus
         v-if="voiceCallData.status"

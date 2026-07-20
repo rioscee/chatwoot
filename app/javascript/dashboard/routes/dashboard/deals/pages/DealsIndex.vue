@@ -128,21 +128,24 @@ const onDealDeleted = () => {
     </div>
 
     <main v-else class="kanban-board">
-      <div v-for="stage in stages" :key="stage.id" class="kanban-column">
+      <div v-for="stage in stages" :key="stage.id" class="kanban-column" :class="`stage-col-${stage.position || 1}`">
         <div class="column-header">
           <div class="column-title-row">
-            <h3 class="column-title">{{ stage.name }}</h3>
+            <h3 class="column-title">
+              <span class="stage-dot" :class="`dot-pos-${stage.position || 1}`"></span>
+              {{ stage.name }}
+            </h3>
             <span class="deals-count-badge">{{ stage.deals ? stage.deals.length : 0 }}</span>
           </div>
           <span class="column-value-total">Total: {{ getStageTotalValue(stage) }}</span>
         </div>
 
         <Draggable
-          v-model="stage.deals"
+          :list="stage.deals"
           group="deals"
           item-key="id"
           class="draggable-list"
-          @change="onDragChange($event, stage.id)"
+          @change="evt => onDragChange(evt, stage.id)"
         >
           <template #item="{ element }">
             <DealCard :deal="element" @delete="onDealDeleted" />
@@ -152,7 +155,7 @@ const onDealDeleted = () => {
     </main>
 
     <CreateDealModal
-      :show="showCreateModal"
+      :is-open="showCreateModal"
       :stages="stages"
       @close="showCreateModal = false"
       @created="onDealCreated"
@@ -179,20 +182,28 @@ const onDealDeleted = () => {
   padding: 1.5rem 2rem;
   background-color: var(--white, #ffffff);
   border-bottom: 1px solid var(--s-200, #e2e8f0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
 .page-title {
-  font-size: clamp(22px, 2.5vw, 30px);
-  font-weight: 700;
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 800;
   color: var(--s-900, #0f172a);
   margin: 0;
+  line-height: 1.2;
   font-family: inherit;
 }
 
 .page-subtitle {
-  font-size: clamp(14px, 1.2vw, 16px);
+  font-size: clamp(13px, 1.1vw, 15px);
   color: var(--s-500, #64748b);
-  margin: 0.25rem 0 0 0;
+  margin: 0;
   font-family: inherit;
 }
 
@@ -288,8 +299,28 @@ const onDealDeleted = () => {
   gap: 0.25rem;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--s-200, #cbd5e1);
+  border-bottom: 3px solid var(--s-200, #cbd5e1);
 }
+
+.stage-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.dot-pos-1 { background-color: #f59e0b; }
+.dot-pos-2 { background-color: #3b82f6; }
+.dot-pos-3 { background-color: #8b5cf6; }
+.dot-pos-4 { background-color: #f97316; }
+.dot-pos-5 { background-color: #10b981; }
+
+.stage-col-1 .column-header { border-bottom-color: #f59e0b; }
+.stage-col-2 .column-header { border-bottom-color: #3b82f6; }
+.stage-col-3 .column-header { border-bottom-color: #8b5cf6; }
+.stage-col-4 .column-header { border-bottom-color: #f97316; }
+.stage-col-5 .column-header { border-bottom-color: #10b981; }
 
 .column-title-row {
   display: flex;
@@ -302,6 +333,8 @@ const onDealDeleted = () => {
   font-weight: 700;
   color: var(--s-800, #1e293b);
   margin: 0;
+  display: flex;
+  align-items: center;
   font-family: inherit;
 }
 
@@ -330,5 +363,41 @@ const onDealDeleted = () => {
   overflow-y: auto;
   min-height: 200px;
   padding: 0.25rem;
+}
+
+/* Dark Mode Styles */
+:global(.dark) .kanban-page {
+  background-color: var(--n-slate-1, #0f172a);
+}
+
+:global(.dark) .kanban-header {
+  background-color: var(--n-slate-2, #1e293b);
+  border-bottom-color: var(--n-slate-4, #334155);
+}
+
+:global(.dark) .page-title {
+  color: var(--n-slate-12, #f8fafc);
+}
+
+:global(.dark) .page-subtitle {
+  color: var(--n-slate-10, #94a3b8);
+}
+
+:global(.dark) .kanban-column {
+  background-color: var(--n-slate-2, #1e293b);
+  border-color: var(--n-slate-4, #334155);
+}
+
+:global(.dark) .column-title {
+  color: var(--n-slate-12, #f8fafc);
+}
+
+:global(.dark) .deals-count-badge {
+  background-color: var(--n-slate-4, #334155);
+  color: var(--n-slate-12, #f8fafc);
+}
+
+:global(.dark) .column-value-total {
+  color: var(--n-slate-10, #94a3b8);
 }
 </style>

@@ -188,4 +188,36 @@ const deleteDeal = async () => {
   text-overflow: ellipsis;
   max-width: 150px;
 }
+
+/* Dark Mode Styles for DealCard */
+:global(.dark) .deal-card {
+  background-color: var(--n-slate-3, #1e293b);
+  border-color: var(--n-slate-4, #334155);
+  color: var(--n-slate-12, #f8fafc);
+}
+
+:global(.dark) .deal-title {
+  color: var(--n-slate-12, #f8fafc);
+}
+
+:global(.dark) .deal-value {
+  color: var(--b-400, #60a5fa);
+}
+
+:global(.dark) .status-badge.open {
+  background-color: var(--n-slate-4, #334155);
+  color: var(--n-slate-11, #cbd5e1);
+}
+
+:global(.dark) .deal-footer {
+  border-top-color: var(--n-slate-4, #334155);
+}
+
+:global(.dark) .contact-link {
+  color: var(--n-slate-11, #cbd5e1);
+}
+
+:global(.dark) .contact-link:hover {
+  color: var(--b-400, #60a5fa);
+}
 </style>
