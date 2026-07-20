@@ -62,7 +62,7 @@ sla_applicable = !conversation.respond_to?(:sla_applicable?) || conversation.sla
 json.sla_policy_id sla_applicable ? conversation.sla_policy_id : nil
 json.partial! 'enterprise/api/v1/conversations/partials/conversation', conversation: conversation if ChatwootApp.enterprise?
 
-deal = conversation.contact&.deals&.last
+deal = Deal.where(contact_id: conversation.contact_id, account_id: conversation.account_id).last
 if deal
   json.deal do
     json.id deal.id
