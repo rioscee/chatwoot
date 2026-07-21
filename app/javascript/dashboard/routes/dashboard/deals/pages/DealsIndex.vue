@@ -365,39 +365,43 @@ const onDealDeleted = () => {
   padding: 0.25rem;
 }
 
-/* Dark Mode Styles */
-:global(.dark) .kanban-page {
-  background-color: var(--n-slate-1, #0f172a);
+</style>
+
+<style>
+/* Night Sky Dark Mode Palette for Kanban Board */
+body.dark .kanban-page {
+  background-color: #1c1f3b !important; /* Mirage */
+  color: #f8fafc !important;
 }
 
-:global(.dark) .kanban-header {
-  background-color: var(--n-slate-2, #1e293b);
-  border-bottom-color: var(--n-slate-4, #334155);
+body.dark .kanban-header {
+  background-color: #282c4d !important; /* Martinique */
+  border-bottom-color: #3c4068 !important; /* Fiord */
 }
 
-:global(.dark) .page-title {
-  color: var(--n-slate-12, #f8fafc);
+body.dark .page-title {
+  color: #ffffff !important;
 }
 
-:global(.dark) .page-subtitle {
-  color: var(--n-slate-10, #94a3b8);
+body.dark .page-subtitle {
+  color: #a0a5c0 !important;
 }
 
-:global(.dark) .kanban-column {
-  background-color: var(--n-slate-2, #1e293b);
-  border-color: var(--n-slate-4, #334155);
+body.dark .kanban-column {
+  background-color: #282c4d !important; /* Martinique */
+  border-color: #3c4068 !important; /* Fiord */
 }
 
-:global(.dark) .column-title {
-  color: var(--n-slate-12, #f8fafc);
+body.dark .column-title {
+  color: #ffffff !important;
 }
 
-:global(.dark) .deals-count-badge {
-  background-color: var(--n-slate-4, #334155);
-  color: var(--n-slate-12, #f8fafc);
+body.dark .deals-count-badge {
+  background-color: #3c4068 !important; /* Fiord */
+  color: #ffffff !important;
 }
 
-:global(.dark) .column-value-total {
-  color: var(--n-slate-10, #94a3b8);
+body.dark .column-value-total {
+  color: #a0a5c0 !important;
 }
 </style>

@@ -189,35 +189,53 @@ const deleteDeal = async () => {
   max-width: 150px;
 }
 
-/* Dark Mode Styles for DealCard */
-:global(.dark) .deal-card {
-  background-color: var(--n-slate-3, #1e293b);
-  border-color: var(--n-slate-4, #334155);
-  color: var(--n-slate-12, #f8fafc);
+</style>
+
+<style>
+/* Night Sky Dark Mode Palette for DealCard */
+body.dark .deal-card {
+  background-color: #1c1f3b !important; /* Mirage */
+  border-color: #3c4068 !important; /* Fiord */
+  color: #f8fafc !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-:global(.dark) .deal-title {
-  color: var(--n-slate-12, #f8fafc);
+body.dark .deal-card:hover {
+  border-color: #4d4e80 !important; /* East Bay */
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
 }
 
-:global(.dark) .deal-value {
-  color: var(--b-400, #60a5fa);
+body.dark .deal-title {
+  color: #ffffff !important;
 }
 
-:global(.dark) .status-badge.open {
-  background-color: var(--n-slate-4, #334155);
-  color: var(--n-slate-11, #cbd5e1);
+body.dark .deal-value {
+  color: #60a5fa !important;
 }
 
-:global(.dark) .deal-footer {
-  border-top-color: var(--n-slate-4, #334155);
+body.dark .status-badge.open {
+  background-color: #3c4068 !important; /* Fiord */
+  color: #e2e8f0 !important;
 }
 
-:global(.dark) .contact-link {
-  color: var(--n-slate-11, #cbd5e1);
+body.dark .deal-footer {
+  border-top-color: #3c4068 !important; /* Fiord */
 }
 
-:global(.dark) .contact-link:hover {
-  color: var(--b-400, #60a5fa);
+body.dark .contact-link {
+  color: #a0a5c0 !important;
+}
+
+body.dark .contact-link:hover {
+  color: #60a5fa !important;
+}
+
+body.dark .delete-btn {
+  color: #a0a5c0 !important;
+}
+
+body.dark .delete-btn:hover {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+  color: #f87171 !important;
 }
 </style>
