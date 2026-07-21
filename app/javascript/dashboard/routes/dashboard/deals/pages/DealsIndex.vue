@@ -368,15 +368,15 @@ const onDealDeleted = () => {
 </style>
 
 <style>
-/* Night Sky Dark Mode Palette for Kanban Board */
+/* Dark Mode Palette matching Contactos and Chatwoot global dark theme */
 body.dark .kanban-page {
-  background-color: #1c1f3b !important; /* Mirage */
+  background-color: var(--n-surface-1, #15171e) !important;
   color: #f8fafc !important;
 }
 
 body.dark .kanban-header {
-  background-color: #282c4d !important; /* Martinique */
-  border-bottom-color: #3c4068 !important; /* Fiord */
+  background-color: var(--n-surface-1, #15171e) !important;
+  border-bottom-color: var(--n-border, rgba(255, 255, 255, 0.08)) !important;
 }
 
 body.dark .page-title {
@@ -384,12 +384,12 @@ body.dark .page-title {
 }
 
 body.dark .page-subtitle {
-  color: #a0a5c0 !important;
+  color: #94a3b8 !important;
 }
 
 body.dark .kanban-column {
-  background-color: #282c4d !important; /* Martinique */
-  border-color: #3c4068 !important; /* Fiord */
+  background-color: var(--n-surface-2, #1c1e28) !important;
+  border-color: var(--n-border, rgba(255, 255, 255, 0.08)) !important;
 }
 
 body.dark .column-title {
@@ -397,11 +397,11 @@ body.dark .column-title {
 }
 
 body.dark .deals-count-badge {
-  background-color: #3c4068 !important; /* Fiord */
+  background-color: var(--n-surface-3, #282c3c) !important;
   color: #ffffff !important;
 }
 
 body.dark .column-value-total {
-  color: #a0a5c0 !important;
+  color: #94a3b8 !important;
 }
 </style>

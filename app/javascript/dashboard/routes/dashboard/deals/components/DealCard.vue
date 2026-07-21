@@ -192,17 +192,17 @@ const deleteDeal = async () => {
 </style>
 
 <style>
-/* Night Sky Dark Mode Palette for DealCard */
+/* Dark Mode Palette matching Contactos and Chatwoot global dark theme */
 body.dark .deal-card {
-  background-color: #1c1f3b !important; /* Mirage */
-  border-color: #3c4068 !important; /* Fiord */
+  background-color: var(--n-surface-3, #242734) !important;
+  border-color: var(--n-border, rgba(255, 255, 255, 0.08)) !important;
   color: #f8fafc !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 body.dark .deal-card:hover {
-  border-color: #4d4e80 !important; /* East Bay */
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
 }
 
 body.dark .deal-title {
@@ -214,16 +214,16 @@ body.dark .deal-value {
 }
 
 body.dark .status-badge.open {
-  background-color: #3c4068 !important; /* Fiord */
-  color: #e2e8f0 !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #cbd5e1 !important;
 }
 
 body.dark .deal-footer {
-  border-top-color: #3c4068 !important; /* Fiord */
+  border-top-color: var(--n-border, rgba(255, 255, 255, 0.08)) !important;
 }
 
 body.dark .contact-link {
-  color: #a0a5c0 !important;
+  color: #94a3b8 !important;
 }
 
 body.dark .contact-link:hover {
@@ -231,7 +231,7 @@ body.dark .contact-link:hover {
 }
 
 body.dark .delete-btn {
-  color: #a0a5c0 !important;
+  color: #94a3b8 !important;
 }
 
 body.dark .delete-btn:hover {
