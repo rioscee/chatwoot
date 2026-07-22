@@ -567,3 +567,56 @@
   value: 'https://us.cloud.langfuse.com'
   locked: false
 ## ---- End of LLM Observability ---- ##
+
+## ---- Storage & Media Retention ---- ##
+- name: ACTIVE_STORAGE_SERVICE
+  value: 'local'
+  display_title: 'Servicio de Almacenamiento'
+  description: 'Selecciona el proveedor (local, s3_compatible, amazon)'
+  locked: false
+  type: select
+  options:
+    local: 'Almacenamiento Local (Disco VPS)'
+    s3_compatible: 'S3 Compatible (Cloudflare R2 / Hetzner Storage Box)'
+    amazon: 'Amazon S3'
+- name: STORAGE_BUCKET_NAME
+  value: ''
+  display_title: 'Nombre del Bucket (Storage Bucket Name)'
+  description: 'Nombre del bucket en Cloudflare R2 o Hetzner Storage Box'
+  locked: false
+- name: STORAGE_ACCESS_KEY_ID
+  value: ''
+  display_title: 'Storage Access Key ID'
+  description: 'Access Key ID de tu proveedor de almacenamiento'
+  locked: false
+- name: STORAGE_SECRET_ACCESS_KEY
+  value: ''
+  display_title: 'Storage Secret Access Key'
+  description: 'Secret Access Key de tu proveedor de almacenamiento'
+  locked: false
+  type: secret
+- name: STORAGE_ENDPOINT
+  value: ''
+  display_title: 'Storage Endpoint URL'
+  description: 'Endpoint URL de Cloudflare R2 (https://<ACCOUNT_ID>.r2.cloudflarestorage.com) o Hetzner'
+  locked: false
+- name: STORAGE_REGION
+  value: 'auto'
+  display_title: 'Región de Almacenamiento'
+  description: 'Región de almacenamiento (para Cloudflare R2 usar auto)'
+  locked: false
+- name: MEDIA_RETENTION_MONTHS
+  value: '0'
+  display_title: 'Política de Retención de Archivos Multimedia (Meses)'
+  description: 'Tiempo en meses para conservar archivos multimedia (fotos, audios, PDFs). 0 = Conservar siempre (Desactivado).'
+  locked: false
+  type: select
+  options:
+    '0': 'Conservar siempre (Desactivado)'
+    '1': '1 mes'
+    '3': '3 meses'
+    '6': '6 meses'
+    '12': '12 meses'
+    '24': '24 meses'
+## ---- End of Storage & Media Retention ---- ##
+

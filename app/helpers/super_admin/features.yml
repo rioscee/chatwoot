@@ -53,6 +53,13 @@ captain:
   enabled: true
   icon: 'icon-captain'
   config_key: 'captain'
+storage:
+  name: 'Storage & Retention'
+  description: 'Configure Cloudflare R2, Hetzner Storage Box or S3, and auto-purge media files.'
+  enabled: true
+  icon: 'icon-folder-line'
+  config_key: 'storage'
+
 
 # ------- Communication Channels ------- #
 live_chat:
