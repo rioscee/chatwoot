@@ -116,3 +116,23 @@ Practical checklist for any change impacting core logic or public APIs
 ## Branding / White-labeling note
 
 - For user-facing strings that currently contain "Chatwoot" but should adapt to branded/self-hosted installs, prefer applying `replaceInstallationName` from `shared/composables/useBranding` in the UI layer (for example tooltip and suggestion labels) instead of adding hardcoded brand-specific copy.
+
+## Deployment & Project Architecture (For AI Agents & Developers)
+
+### Overview
+This project is an optimized, self-hosted Omnichannel CRM based on Chatwoot (Ruby on Rails + Vue 3). It is designed to run on Hetzner VPS with 0 monthly per-agent fees, high performance, and full data privacy.
+
+### Container & Storage Architecture
+- **Stateless Application Container**: Runs Rails, Puma, and Sidekiq. Can be updated, rebuilt, or replaced without data loss.
+- **Persistent Database (PostgreSQL)**: Runs as an isolated container/service mapped to host persistent volumes (`postgres_data`).
+- **External Object Storage (ActiveStorage)**: Connected to Cloudflare R2 or Hetzner Storage Box for media files (images, audio notes, PDFs) to prevent VPS disk consumption.
+- **Automated Backups**: Monthly PostgreSQL backups sent directly to client's Google Drive via `bin/backup_to_gdrive.sh` using `rclone`.
+
+### Deployment Modes
+1. **Demo Version (Entorno de Demostración con Datos)**:
+   - Contains populated test data, sample contacts, simulated inboxes, and conversation history for client demonstrations.
+   - Seeded using `bundle exec rails db:seed` or `Seeders::AccountSeeder`.
+2. **Production Clean Version (Instalación Limpia para Cliente)**:
+   - Fresh installation with a clean, empty PostgreSQL database ready for onboarding real clients and connecting official channels (WhatsApp Cloud API, Instagram, etc.).
+   - Initialized via `bundle exec rails db:chatwoot_prepare`.
+
