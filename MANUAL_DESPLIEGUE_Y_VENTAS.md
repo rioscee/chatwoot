@@ -31,6 +31,11 @@ Este documento contiene la **guía técnica y comercial completa** de la platafo
    * 🌐 **Web Support:** Icono oficial del chat web widget.
 4. **Agente IA (Captain AI / Assistants):**
    * Desbloqueado al 100% (sin barreras ni paywalls Enterprise). Permite entrenar IAs con documentos, preguntas frecuentes y flujos 24/7.
+5. **Almacenamiento Multimedia y Retención Automática:**
+   * Configurable desde *SuperAdmin → Storage & Retention* para conectar **Cloudflare R2** o **Hetzner Storage Box** (S3).
+   * **Job nocturno de purga (`Internal::MediaRetentionJob`):** Elimina adjuntos antiguos (fotos, audios, PDFs de más de $N$ meses) conservando el historial de texto 100% intacto.
+6. **Respaldos Mensuales Automáticos a Google Drive (`bin/backup_to_gdrive.sh`):**
+   * Script automatizado que genera dumps comprimidos de PostgreSQL (`.sql.gz`) y los sube vía `rclone` directamente al Google Drive del cliente con retención de 12 meses.
 
 ---
 
@@ -103,6 +108,13 @@ bundle exec rails demo:limpiar
 6. **Configurar el Dominio en Cloudflare:**
    * Crear un registro `A` apuntando `crm.elnegociodelcliente.com` a la `<IP_DEL_SERVIDOR>`.
    * Activar el proxy de Cloudflare (icono de nube naranja) para SSL/HTTPS automático.
+
+7. **Configurar Almacenamiento Externo (Cloudflare R2):**
+   * Crear bucket en Cloudflare R2 e ingresar llaves API en *SuperAdmin → Storage & Retention* (`/super_admin/app_config?config=storage`).
+
+8. **Activar Backups Automáticos Mensuales a Google Drive:**
+   * Instalar `rclone` (`curl https://rclone.org/install.sh | bash`), vincular la cuenta del cliente (`rclone config` -> `gdrive_chatwoot`) y agregar la tarea en `crontab -e`:
+     `0 2 1 * * /root/chatwoot/bin/backup_to_gdrive.sh >> /var/log/chatwoot_backup.log 2>&1`
 
 ---
 
